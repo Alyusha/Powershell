@@ -55,3 +55,5 @@ Host key verification failed.
 
 #Then open .ssh/known_hosts and delete the key addressed in the message. In the above example it is the 12th line.
 #Reattempt the SSH and you should be asked to verify the RSA key fingerprint again.
+
+#Should only be implemented if you are using a secure terminal with multiple layers of security on that terminal.
