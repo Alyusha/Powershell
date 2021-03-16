@@ -1,0 +1,56 @@
+#Windows SSH KeyGen
+
+#ON THE WINDOWS DEVICE#
+
+ssh-keygen
+
+#Default location is C:\Users\USERNAME/.ssh/
+#Leave empty to enable no passphrase
+#do the same thing
+
+#Goto the file path and open the file in Notpad.
+#Chunk the file into <255 blocks as the input limit is <255.
+
+#ON THE CISCO IOS#
+
+#Config Username and Password
+Username USERNAME Secret PASSWORD
+#Config SSH and disable TCP
+Config Line VTY 0 4
+Transport input SSH
+
+#Config SSH
+IP domain-name NETWORKDOMAIN
+Cryypto key generate RSA modulus 2048
+#Wait for "SSh X.XX has been enabled
+
+#enable SSH V2
+ip ssh version 2
+
+#Inport the Windows Public Key
+ip ssh pubkey-chain
+username USERNAME
+Key-string
+#After "Key-string" all text entered will be record in order of how you enter it. You will need to type or paste in the chunks of the public key you made earlier from Windows. For instnace you will do "First part of the key" <cr> "Second part of the key" <cr> "Third part of the key" <cr> until you have entered the whole key.
+Exit
+Exit
+Exit
+
+#You should be able to SSH into the Device now from Windows without a password.
+#If you recieve:
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the RSA key sent by the remote host is
+51:82:00:1c:7e:6f:ac:ac:de:f1:53:08:1c:7d:55:68.
+Please contact your system administrator.
+Add correct host key in /Users/isaacalves/.ssh/known_hosts to get rid of this message.
+Offending RSA key in /Users/isaacalves/.ssh/known_hosts:12
+RSA host key for 104.131.16.158 has changed and you have requested strict checking.
+Host key verification failed.
+
+#Then open .ssh/known_hosts and delete the key addressed in the message. In the above example it is the 12th line.
+#Reattempt the SSH and you should be asked to verify the RSA key fingerprint again.
