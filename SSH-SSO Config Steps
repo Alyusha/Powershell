@@ -15,9 +15,11 @@ ssh-keygen
 
 #Config Username and Password
 Username USERNAME Secret PASSWORD
+enable password PASSWORD
 
 #Config SSH and disable TCP
 Config Line VTY 0 4
+login local
 Transport input SSH
 
 #Config SSH
