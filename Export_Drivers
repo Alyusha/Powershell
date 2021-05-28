@@ -1,0 +1,45 @@
+#This will Export all Drivers installed on this Windows Device and Place them in the same Directory as this Script under "Exported_Drivers_Temp".
+#This was original created by Martin Buist at "https://www.martinbuist.com/powershell/how-to-extract-certain-driver-from-windows/"
+
+#File Path Location will point to where this script is located.
+$File_Path = Split-Path -Parent $MyInvocation.MyCommand.Definition
+
+#This is where the export takes place.
+Export-WindowsDriver –Online -Destination $File_Path + "\" + "Exported_Drivers_Temp"
+
+#This command must be done with admin perms since it contacts the Windows32 directory. If you are having issues running it as a script or through ISE run it with the following structure as a single Command.
+
+##########################################################################################################################################
+#Export-WindowsDriver –Online -Destination c:\temp
+#The files will then be in "c:\temp"
+
+##########################################################################################################################################
+
+#In order to make use of this information you need to find the oem##.inf file. Procedure to follow.
+
+#Go to "Device Manager"
+#Go to the desired device
+#Right Click and Select "Properties"
+#Go to the "Details" Tab
+#Under the "Property" there is a drop down box.
+#Select the "Property" drop down box.
+#Find and select "Inf name".
+#Under "Value" you should see some kind of name that resembles "oem##.inf" where ## is a number.
+#This is your oem#.inf file.
+
+#Scan the output of the above script for a corresponding "oem##.inf" file.
+#Once you've found the correct record look at the "OriginalFileName".
+#Example
+
+#Driver           : oem99.inf
+#OriginalFileName : C:\Windows\System32\DriverStore\FileRepository\Example.inf_amd64_asf0sr00vfcfg\Example.inf
+#Inbox            : False
+#ClassName        : NetService
+#BootCritical     : False
+#ProviderName     : Example Dev LLC
+#Date             : xx/xx/xxxx 12:00:00 AM
+#Version          : x.x.x.x.x
+
+#In your export file you should attempt to find a folder matching the filepath after "FileRepository". In the above example we are looking for "Example.inf_amd64_asf0sr00vfcfg\Example.inf"
+#That file should be your Driver.
+#From here you can move that file to your desired device and install it as you would any other 3rd party Windows Driver
